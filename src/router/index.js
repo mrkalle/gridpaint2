@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import CanvasComponent from '@/components/CanvasComponent'
+import GridPaintComponent from '@/components/GridPaintComponent'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'CanvasComponent',
-      component: CanvasComponent
+      name: 'GridPaintComponent',
+      component: GridPaintComponent
     }
   ]
 })

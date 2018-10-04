@@ -40,24 +40,18 @@ export default {
     printGrid : function () {
       for (var i = 0; i < 100; i++) {
         for (var j = 0; j < 100; j++) {
-          this.printCircle(i*this.spaceBetweenGrid, j*this.spaceBetweenGrid, 2)
+          this.printCircle(i*this.spaceBetweenGrid, j*this.spaceBetweenGrid, 1, '#000000')
         }
       }
     },
-    printCircle: function (x, y, radius) {
+    printCircle: function (x, y, radius, color) {
       var circle = new paper.Path.Circle({
         center: new paper.Point(x, y),
         radius: radius,
-        fillColor: '#000'
+        fillColor: color,
       })
     }, 
     printLine: function () {
-      /*
-      var line = new paper.Path.Line({
-        from: pos1,
-        to: pos2
-      })
-      line.strokeColor = 'black';*/
     }, 
     mouseDown: function (e) {
       var pos = this.findClosestPoint(e.point.x, e.point.y)
@@ -72,7 +66,8 @@ export default {
       this.tempLine.addChild(new paper.Path.Line({
         from: this.firstPoint,
         to: pos,
-        strokeColor: 'black'
+        strokeColor: this.$store.state.backgroundColor,
+        strokeWidth: 3
       }))
 
       return false
@@ -84,7 +79,8 @@ export default {
       this.lines.addChild(new paper.Path.Line({
         from: this.firstPoint,
         to: pos,
-        strokeColor: 'black'
+        strokeColor: this.$store.state.backgroundColor,
+        strokeWidth: 3
       }))
 
       return false
