@@ -31,6 +31,9 @@ export default {
     paper.view.on('mousedrag', this.mouseDrag);
     paper.view.on('mouseup', this.mouseUp);
 
+    var tool = new paper.Tool()
+    tool.on('keydown', this.onKeyDown);
+
     this.tempLine = new paper.Group();
     this.lines = new paper.Group();
 
@@ -43,6 +46,20 @@ export default {
           this.printCircle(i*this.spaceBetweenGrid, j*this.spaceBetweenGrid, 1, '#000000')
         }
       }
+
+      var line = new paper.Path.Line({
+        from: new paper.Point(0, 500),
+        to: new paper.Point(1500, 500),
+        strokeColor: '#000000',
+        strokeWidth: 2
+      })
+
+      line = new paper.Path.Line({
+        from: new paper.Point(500, 0),
+        to: new paper.Point(500, 1500),
+        strokeColor: '#000000',
+        strokeWidth: 2
+      })
     },
     printCircle: function (x, y, radius, color) {
       var circle = new paper.Path.Circle({
@@ -63,12 +80,20 @@ export default {
       var pos = this.findClosestPoint(e.point.x, e.point.y)
 
       this.tempLine.removeChildren()
-      this.tempLine.addChild(new paper.Path.Line({
-        from: this.firstPoint,
-        to: pos,
-        strokeColor: this.$store.state.backgroundColor,
-        strokeWidth: 3
-      }))
+
+      var rotations = [0, 90, 180, 270];
+
+      for (var i = 0; i < rotations.length; i++) {
+        var firstPointRotated = this.firstPoint.rotate(rotations[i], new paper.Point(500, 500))
+        var secondPointRotated = pos.rotate(rotations[i], new paper.Point(500, 500))
+
+        this.tempLine.addChild(new paper.Path.Line({
+          from: firstPointRotated,
+          to: secondPointRotated,
+          strokeColor: this.$store.state.backgroundColor,
+          strokeWidth: 3
+        }))
+      }
 
       return false
     }, 
@@ -76,15 +101,30 @@ export default {
       var pos = this.findClosestPoint(e.point.x, e.point.y)
 
       this.tempLine.removeChildren()
-      this.lines.addChild(new paper.Path.Line({
-        from: this.firstPoint,
-        to: pos,
-        strokeColor: this.$store.state.backgroundColor,
-        strokeWidth: 3
-      }))
+            
+      var rotations = [0, 90, 180, 270];
+
+      for (var i = 0; i < rotations.length; i++) {
+        var firstPointRotated = this.firstPoint.rotate(rotations[i], new paper.Point(500, 500))
+        var secondPointRotated = pos.rotate(rotations[i], new paper.Point(500, 500))
+
+        this.lines.addChild(new paper.Path.Line({
+          from: firstPointRotated,
+          to: secondPointRotated,
+          strokeColor: this.$store.state.backgroundColor,
+          strokeWidth: 3
+        }))
+      }
 
       return false
-    }, 
+    },
+    onKeyDown: function(e) {
+      if (e.key === 'backspace') {
+        if (this.lines.children.length >= 4) {
+          this.lines.removeChildren(this.lines.children.length - 4, this.lines.children.length)
+        }
+      }
+    },
     findClosestPoint: function (x, y) {
       var closestX = 0;
       var extraX = x % this.spaceBetweenGrid;

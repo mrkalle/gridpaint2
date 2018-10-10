@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+// import axios from 'axios'
 
 /* eslint-disable */
 
@@ -29,6 +29,13 @@ const mutations = {
 
 const actions = {
   fetchAvailableColors (context) {
+    context.commit('clearAvailableColors');
+    context.commit('addAvailableColor', '#247BA0');
+    context.commit('addAvailableColor', '#70C1B3');
+    context.commit('addAvailableColor', '#B2DBBF');
+    context.commit('addAvailableColor', '#F3FFBD');
+    context.commit('addAvailableColor', '#FF1654');
+    /*
     axios({
       method: 'post',
       url: 'http://colormind.io/api/',
@@ -59,6 +66,7 @@ const actions = {
     .catch(function (error) {
       console.log(error);
     });
+    */
   }
 }
 
