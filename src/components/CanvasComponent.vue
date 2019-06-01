@@ -17,6 +17,20 @@ export default {
       lines: null
     }
   }, 
+  computed: {
+    rotations: function () {
+      switch (this.$store.state.mirror) {
+        case 'none': return [0];
+        case 'vertical': return [0, 270];
+        case 'horizontal': return [0, 90];
+        case 'inverse': return [0, 180];
+        case 'quad': return [0, 90, 180];
+        case 'quad-inverse': return [0, 90, 180, 270];
+        case 'octo': return [0, 90, 180, 270];
+        default: throw new exception("faulty mirror");
+      }
+    }
+  },
   mounted () {
     var canvas = document.getElementById('myCanvas')
     paper.setup(canvas)
@@ -81,7 +95,7 @@ export default {
 
       this.tempLine.removeChildren()
 
-      var rotations = [0, 90, 180, 270];
+      var rotations = this.rotations
 
       for (var i = 0; i < rotations.length; i++) {
         var firstPointRotated = this.firstPoint.rotate(rotations[i], new paper.Point(500, 500))
@@ -102,7 +116,7 @@ export default {
 
       this.tempLine.removeChildren()
             
-      var rotations = [0, 90, 180, 270];
+      var rotations = this.rotations
 
       for (var i = 0; i < rotations.length; i++) {
         var firstPointRotated = this.firstPoint.rotate(rotations[i], new paper.Point(500, 500))

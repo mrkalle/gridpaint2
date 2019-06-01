@@ -8,7 +8,8 @@ Vue.use(Vuex)
 
 const state = {
   backgroundColor: '#F64272',
-  availableColors: []
+  availableColors: [],
+  mirror: 'quad-inverse'
 }
 
 const mutations = {
@@ -24,6 +25,9 @@ const mutations = {
   },
   clearAvailableColors (state) {
     state.availableColors = []
+  },
+  setMirror (state, mirror) {
+    state.mirror = mirror
   }
 }
 
@@ -72,7 +76,8 @@ const actions = {
 
 const getters = {
   getBackgroundColor: state => state.backgroundColor,
-  getAvailableColors: state => state.availableColors
+  getAvailableColors: state => state.availableColors,
+  getMirror: state => state.mirror
 }
 
 export default new Vuex.Store({

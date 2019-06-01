@@ -9,6 +9,22 @@
                 </swatches>
             </div>
         </div>
+        <div class="form__field">
+            <div class="md-layout-item">
+                <md-field>
+                    <label for="mirror">Mirroring</label>
+                    <md-select v-model="mirror" name="mirror" id="mirror">
+                        <md-option value="none">None</md-option>
+                        <md-option value="vertical">Vertical</md-option>
+                        <md-option value="horizontal">Horizontal</md-option>
+                        <md-option value="inverse">Inverse</md-option>
+                        <md-option value="quad">Quad</md-option>
+                        <md-option value="quad-inverse">Quad inverse</md-option>
+                        <md-option value="octo">Octo</md-option>
+                    </md-select>
+                </md-field>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -22,7 +38,7 @@ import "vue-swatches/dist/vue-swatches.min.css"
 export default {
     name: 'SettingsComponent',
     components: { 
-      Swatches 
+      Swatches
     },
     computed: {
         color: function () {
@@ -30,6 +46,14 @@ export default {
         },
         colors: function () {
             return this.$store.state.availableColors
+        },
+        mirror: {
+            get: function () {
+                return this.$store.state.mirror
+            },
+            set: function (value) {
+                this.changeMirrorValue(value)
+            }
         }
     },
     methods: {
@@ -38,6 +62,9 @@ export default {
         },
         resetColors: function () {
             this.$store.dispatch("fetchAvailableColors")
+        },
+        changeMirrorValue: function (value) {
+            this.$store.commit("setMirror", value)
         }
     }
 }
